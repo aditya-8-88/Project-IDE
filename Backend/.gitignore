@@ -1,0 +1,3 @@
+env/
+db.sqlite3
+Backend/__pycache__
