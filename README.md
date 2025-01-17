@@ -9,5 +9,16 @@ The project is about making some kind of enhancement to current IDEs. It can be 
 The project will go on like
 1. Firstly creating a website where code compilation can be done. Example - programiz like website, etc.
 
+# Workflow 1
+- Frontend Setup
+- Backend Setup - django
+- Write Dockerfiles for supported languages.
+- Backend-Frontend Connection
+- Logging and Error Handling
+- Database Integration (Optional)
+- Test APIs and Docker integration.
+- Use Docker Compose for deployment.
+- Future Enhancements
+
 ## Note
 The documentation isn't complete, it will process with the porgress of the project. That is one task at a time.
