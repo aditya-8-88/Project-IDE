@@ -20,5 +20,16 @@ The project will go on like
 - Use Docker Compose for deployment.
 - Future Enhancements
 
+## Backend
+```bash
+cd Backend
+python -m venv env
+source env/bin/activate    #.\env\Scripts\activate  # for windows
+pip install -r requirements.txt
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+```
+
 ## Note
 The documentation isn't complete, it will process with the porgress of the project. That is one task at a time.
