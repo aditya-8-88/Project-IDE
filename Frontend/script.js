@@ -6,7 +6,7 @@ document.getElementById("run-btn").addEventListener("click", async () => {
     outputEl.textContent = "Running...";
   
     try {
-      const response = await fetch("http://localhost:3000/run", {
+      const response = await fetch("http://localhost:8000/api/execute/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ language, code }),
