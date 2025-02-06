@@ -1,14 +1,11 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import CodeEditor from './component/CodeEditor'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { toggleTheme } from "../redux/themeSlice"; // Redux action
 import { Sun, Moon } from "lucide-react";
 import { useDispatch } from 'react-redux'
-import {setTheme} from "./redux/slices/theme"
-import './App.css'
+import {setTheme} from "./redux/slices/Theme"
+
 
 function App() {
 

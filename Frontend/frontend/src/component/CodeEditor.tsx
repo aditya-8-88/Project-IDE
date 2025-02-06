@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Editor } from '@monaco-editor/react'
 import { useSelector,useDispatch } from 'react-redux'
-import _debounce from "lodash.debounce"
+
 import { setCode } from "../redux/slices/Codeslice";
 import axios from 'axios';
 
@@ -17,6 +17,18 @@ function CodeEditor() {
     // instacnce for dispatch
     const dispatch = useDispatch()
 
+    // debounce function for performance optimization
+    // this fun is added in both editor the run button for optimization
+    const debounce = (fn,delay:number)=>{
+        let time;
+        return (...args)=>{
+            clearTimeout(time);
+            time=setTimeout(()=>{
+                fn(...args)
+            },delay)
+        }
+    }
+
     // now handel the useState
     const [editorTheme,setEditorTheme]=useState("vs-dark")
     const [languages,setLanguages]=useState("c++")
@@ -26,14 +38,15 @@ function CodeEditor() {
     console.log(code.value,"hello from code ")
 
     // now handel the function for the
-    const handleRun=async()=>{
-        const res = await axios.post("http://localhost:8000/api/execute/",{languages,code})
-        if(res){
-            Setoutput(res!.output)
-        }else{
-            Setoutput("No output")
-        }
+    const callApi=async()=>{
+        await axios.post("http://localhost:8000/api/execute/",{languages,code}).then((res)=>{
+            Setoutput(res.data)
+        }).catch((err)=>{
+            alert(err)
+        })
     }
+    // now on button click the api will call after 500ms and constant api aor fake api calls will reduced
+    const handleRun = debounce(callApi,500)
 
     // handle the ide theme
     useEffect(()=>{
@@ -68,12 +81,12 @@ function CodeEditor() {
       height="400px"
       theme={editorTheme}
       value={code.value}
-      onChange={(value)=>{
+      onChange={debounce((value)=>{
         const payload={
             value
         }
         dispatch(setCode(payload))
-      }}
+      },1000)}
       />
       <div className=' bg-zinc-200 text-black dark:bg-zinc-800 rounded p-3 dark:text-white   gap-5'>
         <span className='bg-zinc-800 text-white dark:bg-zinc-400 rounded p-1 dark:text-black'>
