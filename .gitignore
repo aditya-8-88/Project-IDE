@@ -1,6 +1,0 @@
-Backend/env/
-Backend/db.sqlite3
-Backend/Backend/__pycache__/
-Backend/Sandbox/__pycache__/
-Backend/Sandbox/migrations/
-Backend/Sandbox/code_executor/__pycache__/
