@@ -16,18 +16,11 @@ The project is about making some kind of enhancement to current IDEs. It can be 
 ## Project Timeline
 The project development follows a structured timeline:
 
-1. **Website for Code Compilation**
-    - **Frontend Setup:** Build an interactive and user-friendly interface.
-    - **Backend Setup:** Implement the backend using Django.
-    - **Write Dockerfiles:** Configure Dockerfiles for supported programming languages.
-    - **Backend-Frontend Integration:** Establish communication between the frontend and backend.
-    - **Logging and Error Handling:** Implement robust logging and error-handling mechanisms.
-    - **Database Integration:** Store user data or compilation history.
-    - **Testing:** Validate APIs and Docker integration thoroughly.
-    - **Deployment:** Use Docker Compose for efficient deployment.
+1. **Browser for Code Compilation - Completed**
 
 2. **Future Enhancements**
-
+    - Multi person editing functionality
+    - Video call functionality
 
 ## Docker initialization
 To enable the backend functionality, ensure Docker is installed and running on your system.
