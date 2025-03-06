@@ -1,58 +1,66 @@
 # Project-IDE
-The project is about making some kind of enhancement to current IDEs. It can be some feature on top of it. Complete readme file will be released after final build.
 
-
-## Note
-- **Python version** - ```3.12.8```
-- The documentation will evolve as the project progresses, focusing on one task at a time.
-- Ensure all dependencies are installed as specified in the ```requirements.txt``` file for smooth backend operation.
-
+## Overview
+Project-IDE is a **VS Code extension** that enables real-time collaboration, live code sharing, and seamless project development within VS Code.
 
 ## Features
-- **Web-Based IDE:** Access the IDE directly through a web browser.
-- **Resource Utilization:** Leverages system resources for code execution using Docker containers.
+- **Live Collaboration:** See other users' code edits in real-time with color-coded highlights.
+- **Multi-User Editing:** Work together on the same files.
+- **GitLens-like Tracking:** View code corrections and contributions.
+- **WebSockets for Sync:** Ensures instant updates.
+- **File Sharing:** Share selected files or entire GitHub repositories.
+- **Video Calls (Planned):** Toggle on/off for instant communication.
 
+## Installation
+1. Open VS Code.
+2. Go to **Extensions** (Ctrl+Shift+X).
+3. Search for **Project-IDE** (once published).
+4. Click **Install**.
+5. Activate the extension and start collaborating!
 
-## Project Timeline
-The project development follows a structured timeline:
+## How It Works
+1. **User 1 requests collaboration access.**
+2. **Server creates a session** and returns a unique room ID.
+3. **User 1 invites User 2** via WebSockets.
+4. **User 2 accepts/rejects the invite.**
+5. **If accepted, files are shared, and real-time editing starts.**
+6. **Users can see each other’s edits, cursor positions, and changes.**
+7. **Code execution happens on users’ local machines.**
 
-1. **Browser for Code Compilation - Completed**
+## Prerequisites
+- **VS Code** installed
+- **Python 3.12.8** (for backend setup if required)
+- **Django, Django Channels** (WebSockets support)
 
-2. **Future Enhancements**
-    - Multi person editing functionality
-    - Video call functionality
-
-## Docker initialization
-To enable the backend functionality, ensure Docker is installed and running on your system.
-
-1. **Install Docker:** Follow installation instructions for your platform from Docker's official site.
-2. **Start Docker Service:** Use the following commands:
-    - **Linux:** ```sudo systemctl start docker```
-    - **Windows/Mac:** Start Docker Desktop.
-
-
-## How to Run the Project
-
-### Start Frontend
+## Setup (For Development)
 ```bash
-cd Frontend && python -m http.server 3000 && cd ..
-```
+# Clone the repo
+git clone https://github.com/aditya-8-88/Project-IDE.git
+cd Project-IDE
 
-### Start Backend
-```bash
+# Backend Setup
 cd Backend
 python -m venv env
-source env/bin/activate    #.\env\Scripts\activate  # for windows
+source env/bin/activate  # Windows: .\env\Scripts\activate
 pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
+
+# Frontend Setup (VS Code Extension)
+cd ../Extension
+npm install
+npm run build
 ```
 
+## Future Enhancements
+- **Better UI/UX for collaboration tracking.**
+- **Self-hosted video/audio calls via WebRTC/Jitsi.**
+- **Advanced project management features.**
 
 ## Contributions
-Contributions are welcome! Feel free to fork the repository, open issues, or submit pull requests.
-
+Contributions are welcome! Fork the repo, create issues, and submit pull requests.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
+
