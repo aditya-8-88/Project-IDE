@@ -1,0 +1,15 @@
+node_modules/
+.vscode/
+out/
+dist/
+*.vsix
+.DS_Store
+coverage/
+.nyc_output/
+*.log
+.idea/
+temp/
+.env
+*.tsbuildinfo
+.vscode-test/
+test-resources/
