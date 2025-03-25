@@ -14,8 +14,9 @@
   "contributes": {
     "commands": [
       {
-        "command": "extension.helloWorld",
-        "title": "Hello World"
+        "command": "project-ide.startSession",
+        "title": "Start Collaboration Session",
+        "category": "Project IDE"
       }
     ]
   },
