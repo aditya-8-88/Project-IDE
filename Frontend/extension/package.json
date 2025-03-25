@@ -11,7 +11,28 @@
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
+  
   "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "project-ide-collaboration",
+          "title": "Project IDE",
+          "icon": "$(person-add)"
+        }
+      ]
+    },
+    "views": {
+      "project-ide-collaboration": [
+        {
+          "type": "webview",
+          "id": "project-ide.collaborationView",
+          "name": "Collaboration",
+          "icon": "$(person-add)",
+          "contextualTitle": "Project IDE Collaboration"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "project-ide.startSession",
@@ -20,6 +41,7 @@
       }
     ]
   },
+
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
