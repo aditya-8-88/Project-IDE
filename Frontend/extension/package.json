@@ -11,7 +11,6 @@
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
-  
   "contributes": {
     "viewsContainers": {
       "activitybar": [
@@ -38,10 +37,14 @@
         "command": "project-ide.startSession",
         "title": "Start Collaboration Session",
         "category": "Project IDE"
+      },
+      {
+        "command": "project-ide.connect",
+        "title": "Connect to Collaboration Server",
+        "category": "Project IDE"
       }
     ]
   },
-
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
@@ -51,14 +54,18 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.98.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/vscode": "^1.98.0",
+    "@types/ws": "^8.18.0",
     "@typescript-eslint/eslint-plugin": "^8.25.0",
     "@typescript-eslint/parser": "^8.25.0",
-    "eslint": "^9.21.0",
-    "typescript": "^5.7.3",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "@vscode/test-electron": "^2.4.1",
+    "eslint": "^9.21.0",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "ws": "^8.18.1"
   }
 }
