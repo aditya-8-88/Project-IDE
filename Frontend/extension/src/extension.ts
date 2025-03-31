@@ -139,7 +139,7 @@ export async function activate(context: vscode.ExtensionContext) {
         );
 
         // Register status bar item for easy access
-        const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+        const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 0);
         statusBarItem.text = "$(person-add) Collaborate";
         statusBarItem.command = 'project-ide.startSession';
         statusBarItem.show();
@@ -198,6 +198,9 @@ export async function activate(context: vscode.ExtensionContext) {
                     }
                     vscode.window.showInformationMessage('Disconnected from collaboration server');
                 }
+                else{
+                    vscode.window.showWarningMessage('No active connection to disconnect');
+                }
             })
         );
 
@@ -217,7 +220,6 @@ export function deactivate() {
     
     try {
         if (activeProvider) {
-            activeProvider.updateStatus('Disconnected from server');
             activeProvider.dispose();
             activeProvider = undefined;
         }
