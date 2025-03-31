@@ -1,10 +1,14 @@
 {
-  "name": "extension",
-  "displayName": "Extension",
+  "name": "project-ide",
+  "displayName": "Project IDE",
   "description": "project ide vs code extension",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.98.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/project-ide.git"
   },
   "categories": [
     "Other"
@@ -47,11 +51,10 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src",
-    "test": "vscode-test"
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "clean": "rm -rf out/ *.vsix"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -63,7 +66,10 @@
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
     "eslint": "^9.21.0",
-    "typescript": "^5.7.3"
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.3",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "ws": "^8.18.1"
