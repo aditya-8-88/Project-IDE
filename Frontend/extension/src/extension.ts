@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { CollaborationClient } from './websocket';
 
 // This class provides the webview view for collaboration
-class CollaborationViewProvider implements vscode.WebviewViewProvider {
+export class CollaborationViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'project-ide.collaborationView';
     private _view?: vscode.WebviewView;
 
@@ -120,8 +120,8 @@ export async function activate(context: vscode.ExtensionContext) {
         // Create and register the webview provider
         activeProvider = new CollaborationViewProvider(context.extensionUri);
 
+        // Register the webview view provider
         activeDisposables.push(
-            // Register the webview view provider
             vscode.window.registerWebviewViewProvider(CollaborationViewProvider.viewType, activeProvider),
             // Register the command to start a collaboration session
             vscode.commands.registerCommand('project-ide.startSession', async () => {
@@ -162,27 +162,25 @@ export async function activate(context: vscode.ExtensionContext) {
                     placeHolder: 'ws://localhost:3000'
                 });
 
-                if (!serverUrl) {
-                    return;
-                }
+                if (!serverUrl) {return;}
 
+               
                 try {
-                    if (activeProvider) {
-                        activeProvider.updateStatus('Connecting to server...');
+                    if (!activeProvider) {
+                        throw new Error('WebView provider not initialized');
                     }
 
-                    // Initialize the collaboration client with the workspace folder
-                    collaborationClient = new CollaborationClient();
+                    activeProvider.updateStatus('Connecting to server...');
+
+                    // Initialize client with provider
+                    collaborationClient = new CollaborationClient(activeProvider);
                     await collaborationClient.connect(serverUrl);
 
-                    if (activeProvider) {
-                        activeProvider.updateStatus('Connected and ready to collaborate ✨');
-                    }
+                    
+
                 } catch (error) {
                     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-                    if (activeProvider) {
-                        activeProvider.updateStatus(`Connection failed: ${errorMessage}`, true);
-                    }
+                    activeProvider?.updateStatus(`Connection failed: ${errorMessage}`, true);
                     vscode.window.showErrorMessage('Failed to connect: ' + errorMessage);
                 }
             })
@@ -190,15 +188,15 @@ export async function activate(context: vscode.ExtensionContext) {
 
         // Register the disconnect command (optional if using webview button only)
         context.subscriptions.push(
-            vscode.commands.registerCommand('project-ide.disconnect', () => {
+            vscode.commands.registerCommand('project-ide.disconnect', async () => {
                 if (collaborationClient) {
                     collaborationClient.disconnect();
+                    
                     if (activeProvider) {
                         activeProvider.updateStatus('Disconnected from server');
                     }
                     vscode.window.showInformationMessage('Disconnected from collaboration server');
-                }
-                else{
+                } else {
                     vscode.window.showWarningMessage('No active connection to disconnect');
                 }
             })
@@ -211,7 +209,6 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
-    console.log('Project IDE extension is being deactivated');
 
     if (collaborationClient) {
         collaborationClient.disconnect();
