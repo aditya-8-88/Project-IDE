@@ -27,6 +27,9 @@ export class CollaborationClient {
 
                 this.ws.addEventListener('close', async () => {
                     vscode.window.showWarningMessage('Disconnected from collaboration server');
+
+                    // Adding a delay of 2 seconds before attempting to reconnect
+                    await new Promise(resolve => setTimeout(resolve, 2000));
                     
                     // Reconnect if the disconnect was not user-initiated
                     if (this.shouldReconnect && this.reconnectAttempts < this.MAX_RECONNECT_ATTEMPTS) {
