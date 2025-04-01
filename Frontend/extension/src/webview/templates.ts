@@ -75,48 +75,15 @@ export function getWebviewContent(status: string = 'Ready to collaborate ✨',is
             const vscode = acquireVsCodeApi();
             const connectBtn = document.getElementById('connectBtn');
             const disconnectBtn = document.getElementById('disconnectBtn');
-            const roomInfo = document.getElementById('roomInfo');
 
             function connect() {
                 vscode.postMessage({ type: 'CONNECT' });
-                connectBtn.disabled = true;
-                disconnectBtn.disabled = false;
             }
 
             function disconnect() {
                 vscode.postMessage({ type: 'DISCONNECT' });
-                connectBtn.disabled = false;
-                disconnectBtn.disabled = true;
-                roomInfo.style.display = 'none';
             }
 
-            // Handle messages from extension
-            window.addEventListener('message', event => {
-                const message = event.data;
-                switch (message.type) {
-                    case 'UPDATE_ROOM':
-                        updateRoomInfo(message.data);
-                        break;
-                    case 'CONNECTION_STATUS':
-                        updateConnectionStatus(message.data);
-                        break;
-                }
-            });
-
-            function updateRoomInfo(data) {
-                if (data.roomId) {
-                    document.getElementById('roomId').textContent = 'Room ID: ' + data.roomId;
-                    document.getElementById('role').textContent = 'Role: ' + data.role;
-                    document.getElementById('participants').textContent = 
-                        'Participants: ' + data.participants;
-                    roomInfo.style.display = 'block';
-                }
-            }
-
-            function updateConnectionStatus(data) {
-                connectBtn.disabled = data.isConnected;
-                disconnectBtn.disabled = !data.isConnected;
-            }
         </script>
     </body>
     </html>

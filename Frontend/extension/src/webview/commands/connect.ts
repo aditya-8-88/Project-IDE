@@ -1,37 +1,43 @@
 import * as vscode from 'vscode';
+import { CollaborationClient } from '../../websocket/client';
 
 export async function connectCmd(context: vscode.ExtensionContext, state: any) {
-    vscode.commands.registerCommand('project-ide.connect', async () => {
-        const { workspaceFolders } = vscode.workspace;
-        if (!workspaceFolders) {
-            vscode.window.showErrorMessage('Please open a workspace first');
-            return;
+    const { workspaceFolders } = vscode.workspace;
+    if (!workspaceFolders) {
+        vscode.window.showErrorMessage('Please open a workspace first');
+        return;
+    }
+
+    // const serverUrl = await vscode.window.showInputBox({
+    //     prompt: 'Enter collaboration server URL',
+    //     placeHolder: 'ws://localhost:8080'
+    // });
+
+    const serverUrl = 'ws://localhost:8080'; // For testing purposes, hardcoded URL
+
+    if (!serverUrl) { return; }
+
+    try {
+        if (!state.provider) {
+            throw new Error('WebView provider not initialized');
         }
 
-        const serverUrl = await vscode.window.showInputBox({
-            prompt: 'Enter collaboration server URL',
-            placeHolder: 'ws://localhost:8080'
-        });
+        state.provider.updateStatus('Connecting to server...');
 
-        if (!serverUrl) { return; }
+        // Create a new client instance
+        state.client = new CollaborationClient();
+        
+        // Connect to server
+        await state.client.connect(serverUrl, state);
 
-        try {
-            if (!state._provider) {
-                throw new Error('WebView provider not initialized');
-            }
+        // state.provider.updateConnectionStatus(true); 
 
-            state._provider.updateStatus('Connecting to server...');
+        // Update status after successful connection
+        state.provider.updateStatus('Connected to server ✨');
 
-            // Initialize client with provider
-            state._client = new state._client(state._provider);
-            await state._client.connect(serverUrl);
-
-
-
-        } catch (error) {
-            const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-            state._provider?.updateStatus(`Connection failed: ${errorMessage}`, true);
-            vscode.window.showErrorMessage('Failed to connect: ' + errorMessage);
-        }
-    });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        state.provider?.updateStatus(`Connection failed: ${errorMessage}`, true);
+        vscode.window.showErrorMessage('Failed to connect: ' + errorMessage);
+    }
 }

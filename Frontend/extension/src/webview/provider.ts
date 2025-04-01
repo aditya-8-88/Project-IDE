@@ -2,22 +2,15 @@ import * as vscode from 'vscode';
 import { CollaborationClient } from '../websocket/client';
 import { getWebviewContent } from './templates';
 
-let collaborationClient: CollaborationClient | undefined;
-
 export class CollaborationViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'project-ide.collaborationView';
     private _view?: vscode.WebviewView;
-    private client?: CollaborationClient;
 
-    constructor(private readonly _extensionUri: vscode.Uri) { 
-        this.client = collaborationClient;
-    }
+    constructor(private readonly _extensionUri: vscode.Uri) {}
 
     // Called when the view is created
     public resolveWebviewView(
         webviewView: vscode.WebviewView,
-        context: vscode.WebviewViewResolveContext,
-        _token: vscode.CancellationToken
     ) {
         this._view = webviewView;
         webviewView.webview.options = {
@@ -25,7 +18,7 @@ export class CollaborationViewProvider implements vscode.WebviewViewProvider {
             localResourceRoots: [this._extensionUri]
         };
 
-        // Set the HTML content for the webview
+        // Set initial HTML content
         webviewView.webview.html = this._getHtmlContent();
 
         // Handle messages from the webview
@@ -35,10 +28,7 @@ export class CollaborationViewProvider implements vscode.WebviewViewProvider {
                     vscode.commands.executeCommand('project-ide.connect');
                     break;
                 case 'DISCONNECT':
-                    if (this.client) {
-                        this.client.disconnect();
-                        vscode.commands.executeCommand('project-ide.disconnect');
-                    }
+                    vscode.commands.executeCommand('project-ide.disconnect');
                     break;
                 default:
                     console.log('Received unknown message:', message);
@@ -59,30 +49,6 @@ export class CollaborationViewProvider implements vscode.WebviewViewProvider {
     // Generates the HTML content for the webview
     private _getHtmlContent(status: string = 'Ready to collaborate ✨', isError: boolean = false): string {
         return getWebviewContent(status, isError);
-    }
-
-    // Update room information
-    public updateRoomInfo(roomData: {
-        roomId: string;
-        role: 'host' | 'client';
-        participants: string[];
-    }) {
-        if (this._view) {
-            this._view.webview.postMessage({
-                type: 'UPDATE_ROOM',
-                data: roomData
-            });
-        }
-    }
-
-    // Update connection status
-    public updateConnectionStatus(isConnected: boolean) {
-        if (this._view) {
-            this._view.webview.postMessage({
-                type: 'CONNECTION_STATUS',
-                data: { isConnected }
-            });
-        }
     }
 
     // Called when the view is disposed
