@@ -13,3 +13,5 @@ temp/
 *.tsbuildinfo
 .vscode-test/
 test-resources/
+
+zzz.md
