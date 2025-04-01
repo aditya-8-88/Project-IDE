@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { CollaborationViewProvider } from './extension';
+import { CollaborationViewProvider } from '../webview/provider';
 
 export class CollaborationClient {
     constructor(private readonly provider: CollaborationViewProvider) {}
@@ -18,7 +18,7 @@ export class CollaborationClient {
 
                 this.ws.addEventListener('open', () => {
                     this.reconnectAttempts = 0;
-                    // Update status only after connection is established
+                    // Update status after connection is established
                     this.provider.updateStatus('Connected to Server ✨');
                     resolve();
                 });
@@ -46,7 +46,6 @@ export class CollaborationClient {
     }
 
     disconnect(): void {
-
         this.shouldReconnect = false;
         if (this.ws) {
             this.ws.close();
