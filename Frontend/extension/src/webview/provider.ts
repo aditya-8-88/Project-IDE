@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
-import { CollaborationClient } from '../websocket/client';
 import { getWebviewContent } from './templates';
 
 export class CollaborationViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'project-ide.collaborationView';
     private _view?: vscode.WebviewView;
+    private _isLoggedIn: boolean = false;
+    private _userInfo?: any;
 
-    constructor(private readonly _extensionUri: vscode.Uri) {}
+    constructor(private readonly _extensionUri: vscode.Uri) { }
 
     // Called when the view is created
     public resolveWebviewView(
@@ -30,6 +31,12 @@ export class CollaborationViewProvider implements vscode.WebviewViewProvider {
                 case 'DISCONNECT':
                     vscode.commands.executeCommand('project-ide.disconnect');
                     break;
+                case 'LOGIN':
+                    vscode.commands.executeCommand('project-ide.login', message.provider);
+                    break;
+                case 'LOGOUT':
+                    vscode.commands.executeCommand('project-ide.logout');
+                    break;
                 default:
                     console.log('Received unknown message:', message);
             }
@@ -48,11 +55,28 @@ export class CollaborationViewProvider implements vscode.WebviewViewProvider {
 
     // Generates the HTML content for the webview
     private _getHtmlContent(status: string = 'Ready to collaborate ✨', isError: boolean = false): string {
-        return getWebviewContent(status, isError);
+        return getWebviewContent(status, isError, this._isLoggedIn, this._userInfo);
     }
 
     // Called when the view is disposed
     public dispose() {
         this._view = undefined;
+    }
+
+    // Update authentication state
+    public updateAuthState(isLoggedIn: boolean, userInfo?: any) {
+        this._isLoggedIn = isLoggedIn;
+        this._userInfo = userInfo;
+        if (this._view) {
+            this._view.webview.html = this._getHtmlContent();
+        }
+    }
+
+    // Update user info when received from server
+    public updateUserInfo(userInfo: any) {
+        this._userInfo = userInfo;
+        if (this._view) {
+            this._view.webview.html = this._getHtmlContent();
+        }
     }
 }
