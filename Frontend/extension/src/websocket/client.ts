@@ -1,5 +1,6 @@
 import WebSocket from 'ws';
 import { ExtensionState } from '../state/extensionState';
+import { AuthInfo } from '../services/authentication';
 
 export class CollaborationClient {
     private ws: WebSocket | undefined;
@@ -8,7 +9,7 @@ export class CollaborationClient {
     private shouldReconnect: boolean = true;
     private currentServerUrl: string = '';
 
-    async connect(serverUrl: string): Promise<void> {
+    async connect(serverUrl: string, authInfo?: AuthInfo): Promise<void> {
         this.shouldReconnect = true;
         this.currentServerUrl = serverUrl;
         this.reconnectAttempts = 0;
@@ -16,7 +17,7 @@ export class CollaborationClient {
         return new Promise((resolve, reject) => {
             try {
                 const state = ExtensionState.getInstance();
-                const {provider} = state;
+                const { provider } = state;
                 if (!provider) {
                     throw new Error('Provider not initialized');
                 }
@@ -26,6 +27,10 @@ export class CollaborationClient {
 
                 this.ws.addEventListener('open', () => {
                     this.reconnectAttempts = 0;
+                    // Send authentication information after connection is established
+                    if (authInfo) {
+                        this.sendAuthMessage(authInfo);
+                    }
                     provider.updateStatus('Connected to Server ✨');
                     resolve();
                 });
@@ -34,6 +39,20 @@ export class CollaborationClient {
                     try {
                         const data = JSON.parse(event.data.toString());
                         console.log('Received message:', data);
+
+                        // Handle authentication responses
+                        if (data.type === 'AUTH_SUCCESS') {
+                            const state = ExtensionState.getInstance();
+                            state.provider?.updateStatus('Authentication successful ✨');
+
+                            // Update UI with user information if available
+                            if (data.user && state.provider) {
+                                state.provider.updateUserInfo(data.user);
+                            }
+                        } else if (data.type === 'AUTH_FAILURE') {
+                            const state = ExtensionState.getInstance();
+                            state.provider?.updateStatus(`Authentication failed: ${data.error || 'Unknown error'}`, true);
+                        }
                     } catch (error) {
                         console.error('Error parsing message:', error);
                     }
@@ -134,5 +153,17 @@ export class CollaborationClient {
 
     isConnected(): boolean {
         return this.ws?.readyState === WebSocket.OPEN;
+    }
+
+    private sendAuthMessage(authInfo: AuthInfo): void {
+        if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+            const authMessage = {
+                type: 'AUTH',
+                provider: authInfo.provider,
+                token: authInfo.token
+            };
+            this.ws.send(JSON.stringify(authMessage));
+            console.log(`Sent authentication for provider: ${authInfo.provider}`);
+        }
     }
 }

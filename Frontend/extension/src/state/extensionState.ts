@@ -1,11 +1,16 @@
 import { CollaborationClient } from '../websocket/client';
 import { CollaborationViewProvider } from '../webview/provider';
+import { AuthenticationService, AuthInfo } from '../services/authentication';
+
 
 // Extension state management
 export class ExtensionState {
     private static instance: ExtensionState;
+    
     private _provider?: CollaborationViewProvider;
     private _client?: CollaborationClient;
+    public authService?: AuthenticationService;
+    public authInfo?: AuthInfo;
 
     private constructor() {}
 

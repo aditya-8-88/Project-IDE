@@ -27,8 +27,8 @@ export async function connectCmd(context: vscode.ExtensionContext, state: any) {
         // Create a new client instance
         state.client = new CollaborationClient();
         
-        // Connect to server
-        await state.client.connect(serverUrl, state);
+        // Connect to server with authInfo
+        await state.client.connect(serverUrl, state.authInfo);
 
         // state.provider.updateConnectionStatus(true); 
 
