@@ -4,14 +4,22 @@ const SessionManager = require("./SessionManager");
 const MessageHandler = require("./MessageHandler");
 
 class WebSocketServer {
-    constructor(port = 8080) {
-        this.server = new WebSocket.Server({ port });
+    constructor(server) {
+        this.server = typeof server === 'number' 
+            ? new WebSocket.Server({ port: server }) 
+            : server;
         this.clients = new ClientManager();
         this.sessions = new SessionManager();
         this.messageHandler = new MessageHandler(this.sessions, this.clients);
         
         this.server.on("connection", (ws) => this.handleConnection(ws));
-        console.log(`WebSocket Server running on port ${port}`);
+        
+        // Fixed console log
+        if (typeof server === 'number') {
+            console.log(`WebSocket Server running on port ${server}`);
+        } else {
+            console.log(`WebSocket Server initialized`);
+        }
         
         // Setup periodic health checks
         setInterval(() => {
