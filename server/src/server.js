@@ -108,7 +108,8 @@ app.get('/auth/google/callback', async (req, res) => {
         </html>
         `);
     } catch (error) {
-        res.status(500).send(`Authentication failed: ${error.message}`);
+        console.error("Google OAuth callback error:", error);
+        res.status(500).send('Authentication failed. Please try again later.');
     }
 });
 
