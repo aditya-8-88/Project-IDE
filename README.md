@@ -1,66 +1,131 @@
-# Project-IDE
+# Project-IDE: Real-Time Collaboration in VS Code
 
 ## Overview
-Project-IDE is a **VS Code extension** that enables real-time collaboration, live code sharing, and seamless project development within VS Code.
+
+**Project-IDE** is a powerful **VS Code extension** designed to bring real-time collaboration, live code sharing, and seamless project development directly into your favorite code editor. It transforms VS Code into a collaborative workspace where developers can work together on the same files, share code, and track changes in real-time.
+
+This project started as a **web-based IDE** but has now evolved into a **VS Code extension** to provide a more integrated and developer-friendly experience.
+
+---
 
 ## Features
-- **Live Collaboration:** See other users' code edits in real-time with color-coded highlights.
-- **Multi-User Editing:** Work together on the same files.
-- **GitLens-like Tracking:** View code corrections and contributions.
-- **WebSockets for Sync:** Ensures instant updates.
-- **File Sharing:** Share selected files or entire GitHub repositories.
-- **Video Calls (Planned):** Toggle on/off for instant communication.
+
+### Current Features:
+- **Live Collaboration**: See other users' edits in real-time with color-coded highlights.
+- **Multi-User Editing**: Collaborate with multiple developers on the same files.
+- **Cursor Sharing**: Track collaborators' cursor positions for better coordination.
+- **WebSocket-Based Sync**: Instant updates for code changes, cursor movements, and more.
+- **OAuth Integration**: Secure authentication via Google and GitHub.
+- **Session Management**: Create, join, and leave collaboration sessions seamlessly.
+- **Error Handling**: Robust error handling for WebSocket connections and session management.
+
+### Planned Features:
+- **File Sharing**: Share selected files or entire GitHub repositories with collaborators.
+- **Video/Audio Calls**: Enable instant communication via WebRTC or Jitsi.
+- **GitLens-Like Tracking**: View detailed contributions and corrections made by collaborators.
+- **Advanced Project Management**: Add task tracking, issue management, and more.
+- **Offline Collaboration**: Enable collaboration even when disconnected, with automatic sync when reconnected.
+
+---
+
+## How It Works
+
+1. **Start a Session**: A user initiates a collaboration session via the extension.
+2. **Invite Collaborators**: Share the session ID or invite collaborators directly.
+3. **Real-Time Collaboration**: Collaborators join the session and can edit files, view changes, and track cursor movements in real-time.
+4. **Code Sync**: All changes are synced instantly using WebSockets.
+5. **Session Management**: Users can leave sessions, and sessions are automatically cleaned up when inactive.
+
+---
+
+## What I Have Done
+
+- **Migrated from Web-Based to VS Code Extension**: The project was initially a web-based IDE but has been reimagined as a VS Code extension for better integration and usability.
+- **Built a Robust Backend**: Developed a Node.js-based backend with WebSocket support for real-time communication.
+- **Implemented OAuth Authentication**: Added secure login via Google and GitHub for user authentication.
+- **Developed Core Collaboration Features**: Real-time code sharing, cursor tracking, and session management are fully functional.
+- **Error Handling and Reconnection Logic**: Ensured stability with automatic reconnection for WebSocket connections.
+
+---
+
+## What I Am Working On
+
+- **Improving the User Interface**: Enhancing the extension's UI/UX for better usability and clarity.
+- **File Sharing**: Adding the ability to share files and folders directly within the collaboration session.
+- **Session Persistence**: Ensuring sessions persist across VS Code restarts.
+- **Testing and Debugging**: Writing comprehensive unit tests and fixing bugs to ensure a stable experience.
+- **File Sharing**
+
+---
+
+## What I Will Make Ultimately
+
+The ultimate goal of **Project-IDE** is to create a **seamless, real-time collaborative development environment** within VS Code. Here's what the final product will look like:
+
+- **Complete Collaboration Suite**: Real-time editing, file sharing, and communication tools (video/audio calls).
+- **Advanced Git Integration**: Track changes, view commit histories, and resolve merge conflicts collaboratively.
+- **Self-Hosted Option**: Allow users to host their own collaboration server for privacy and control.
+- **Cross-Platform Support**: Ensure compatibility with all major operating systems and VS Code versions.
+
+---
 
 ## Installation
-1. Open VS Code.
-2. Go to **Extensions** (Ctrl+Shift+X).
+
+1. Open **VS Code**.
+2. Go to the **Extensions** view (`Ctrl+Shift+X`).
 3. Search for **Project-IDE** (once published).
 4. Click **Install**.
 5. Activate the extension and start collaborating!
 
-## How It Works
-1. **User 1 requests collaboration access.**
-2. **Server creates a session** and returns a unique room ID.
-3. **User 1 invites User 2** via WebSockets.
-4. **User 2 accepts/rejects the invite.**
-5. **If accepted, files are shared, and real-time editing starts.**
-6. **Users can see each other’s edits, cursor positions, and changes.**
-7. **Code execution happens on users’ local machines.**
+---
 
 ## Prerequisites
-- **VS Code** installed
-- **Python 3.12.8** (for backend setup if required)
-- **Django, Django Channels** (WebSockets support)
 
-## Setup (For Development)
+- **VS Code** installed on your machine.
+- **Node.js** (for backend setup if required).
+- **npm** (for managing dependencies).
+
+---
+
+## Development Setup
+
+### Backend Setup:
 ```bash
-# Clone the repo
+# Clone the repository
 git clone https://github.com/aditya-8-88/Project-IDE.git
-cd Project-IDE
+cd Project-IDE/server
 
-# Backend Setup
-cd Backend
-python -m venv env
-source env/bin/activate  # Windows: .\env\Scripts\activate
-pip install -r requirements.txt
-python manage.py makemigrations
-python manage.py migrate
-python manage.py runserver
-
-# Frontend Setup (VS Code Extension)
-cd ../Extension
+# Install dependencies
 npm install
-npm run build
+
+# Start the server
+cd src/ && node server.js
 ```
 
-## Future Enhancements
-- **Better UI/UX for collaboration tracking.**
-- **Self-hosted video/audio calls via WebRTC/Jitsi.**
-- **Advanced project management features.**
+### Frontend (VS Code Extension) Setup:
+```bash
+# Navigate to the extension folder
+cd ../Frontend/extension
+
+# Install dependencies
+npm install
+
+# Build the extension
+npm run build
+
+# Launch the extension in VS Code
+code .
+```
 
 ## Contributions
-Contributions are welcome! Fork the repo, create issues, and submit pull requests.
+Contributions are welcome! Here's how you can help:
 
-## License
-This project is licensed under the **MIT License**.
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Submit a pull request with a detailed description of your changes.
 
+## Contact
+For questions, suggestions, or feedback, feel free to reach out:
+
+- **Email**: adityapratapsingh12b05@gmail.com
+- **GitHub**: aditya-8-88
