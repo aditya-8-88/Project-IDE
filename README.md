@@ -43,7 +43,6 @@ This project started as a **web-based IDE** but has now evolved into a **VS Code
 - **Migrated from Web-Based to VS Code Extension**: The project was initially a web-based IDE but has been reimagined as a VS Code extension for better integration and usability.
 - **Built a Robust Backend**: Developed a Node.js-based backend with WebSocket support for real-time communication.
 - **Implemented OAuth Authentication**: Added secure login via Google and GitHub for user authentication.
-- **Developed Core Collaboration Features**: Real-time code sharing, cursor tracking, and session management are fully functional.
 - **Error Handling and Reconnection Logic**: Ensured stability with automatic reconnection for WebSocket connections.
 
 ---
@@ -54,7 +53,7 @@ This project started as a **web-based IDE** but has now evolved into a **VS Code
 - **File Sharing**: Adding the ability to share files and folders directly within the collaboration session.
 - **Session Persistence**: Ensuring sessions persist across VS Code restarts.
 - **Testing and Debugging**: Writing comprehensive unit tests and fixing bugs to ensure a stable experience.
-- **File Sharing**
+- **Developing Core Collaboration Features**: Real-time code sharing, cursor tracking, and session management.
 
 ---
 
