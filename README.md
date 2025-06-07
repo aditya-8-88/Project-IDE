@@ -18,14 +18,6 @@ This project started as a **web-based IDE** but has now evolved into a **VS Code
 
 ---
 
-## Prerequisites
-
-- **VS Code** installed on your machine.
-- **Node.js** (for backend setup if required).
-- **npm** (for managing dependencies).
-
----
-
 ## Contributions
 Contributions are welcome! Here's how you can help:
 
