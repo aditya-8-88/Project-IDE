@@ -167,3 +167,91 @@ export class CollaborationClient {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// client.js (Browser or VS Code extension)
+
+import * as Y from 'yjs';
+
+export async function startCollab(sessionId, filename, editor) {
+  const doc = new Y.Doc();
+  const ws = new WebSocket(`ws://localhost:3000/collab/${sessionId}`);
+  ws.binaryType = 'arraybuffer';
+
+  // Receive initial document state and updates
+  ws.addEventListener('message', event => {
+    if (event.data instanceof ArrayBuffer) {
+      Y.applyUpdate(doc, new Uint8Array(event.data));
+    }
+  });
+
+  // Bind editor ↔ Yjs
+  const ytext = doc.getText('file');
+  editor.value = ytext.toString();
+  editor.addEventListener('input', () => {
+    const old = ytext.toString();
+    ytext.delete(0, old.length);
+    ytext.insert(0, editor.value);
+  });
+
+  doc.on('update', update => {
+    ws.send(update);  // binary
+  });
+
+  // Awareness (cursor)
+  import('y-protocols/awareness').then(({ Awareness }) => {
+    const awareness = new Awareness(doc);
+    // set your local cursor state whenever it changes
+    editor.addEventListener('keyup', () => {
+      const pos = editor.selectionStart;
+      awareness.setLocalStateField('cursor', { index: pos, length: 0 });
+      const upd = awareness.encodeUpdate();
+      ws.send(upd);
+    });
+  });
+}
